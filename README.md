@@ -2,7 +2,7 @@
 
 Example of a RESTful API built with Node.js, Express.js, MongoDB and Mongoose.
 
-## RESTful API
+## RESTful API endpoints
 
 ### GET `/api/items`
 
