@@ -28,6 +28,7 @@ itemRouter
     var item = new Item(request.body);
 
     item.save();
+
     response.status(201).send(item);
   })
   .get(function (request, response) {
