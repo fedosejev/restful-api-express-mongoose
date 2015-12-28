@@ -79,5 +79,5 @@ Delete item with specific id.
 
 ## Run
 
-0. Make sure MongoDB is running, if not: `sudo ~/mongodb/bin/mongod` (assuming you have `~/mongodb`).
+0. Make sure MongoDB is running, if not: `sudo ~/mongodb/bin/mongod` (assuming you have `~/mongodb` directory).
 1. `npm run start`
