@@ -6,45 +6,52 @@ var app = express();
 
 var PORT = 8080;
 
-var db = mongoose.connect('mongodb://localhost/calendar');
-var Task = require('./models/taskModel');
+var db = mongoose.connect('mongodb://localhost/shoppingList');
+var Item = require('./models/item');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-var taskRouter = express.Router();
+var itemRouter = express.Router();
 
-taskRouter
-  .route('/tasks')
+itemRouter
+  .route('/items')
   .post(function (request, response) {
-    var task = new Task(request.body);
 
-    task.save();
-    response.status(201).send(task);
+    console.log('POST /items');
+
+    var item = new Item(request.body);
+
+    item.save();
+    response.status(201).send(item);
   })
   .get(function (request, response) {
 
-    Task.find(function (error, dayDocument) {
+    console.log('GET /items');
+
+    Item.find(function (error, itemDocument) {
       if (error) {
         response.status(500).send(error);
         return;
       }
 
-      console.log(dayDocument);
+      console.log(itemDocument);
 
-      response.json(dayDocument);
+      response.json(itemDocument);
     });
   });
 
-taskRouter
-  .route('/tasks/:day')
+itemRouter
+  .route('/items/:itemId')
   .get(function (request, response) {
 
-    var day = request.params.day;
+    console.log('GET /items/:itemId');
 
-    Task.find({ day: day }, function (error, dayDocument) {
+    var itemId = request.params.itemId;
+
+    Item.find({ id: itemId }, function (error, itemDocument) {
       if (error) {
         console.error(error);
 
@@ -53,29 +60,31 @@ taskRouter
         return;
       }
 
-      console.log(dayDocument);
+      console.log(itemDocument);
 
-      response.json(dayDocument);
+      response.json(itemDocument);
 
     });
   })
   .put(function (request, response) {
 
-    var day = request.params.day;
+    console.log('PUT /items/:itemId');
 
-    Task.findOne({ day: day }, function (error, task) {
+    var itemId = request.params.itemId;
+
+    Item.findOne({ id: itemId }, function (error, item) {
       if (error) {
         response.status(500).send(error);
         return;
       }
 
-      if (task) {
-        task.text = request.body.text;
-        task.latitude = request.body.latitude;
-        task.longitude = request.body.longitude;
-        task.save();
+      if (item) {
+        item.name = request.body.name;
+        item.description = request.body.description;
+        item.quantity = request.body.quantity;
+        item.save();
 
-        response.json(task);
+        response.json(item);
         return;
       }
 
@@ -84,21 +93,32 @@ taskRouter
   })
   .patch(function (request, response) {
 
-    var day = request.params.day;
+    console.log('PATCH /items/:itemId');
 
-    Task.findOne({ day: day }, function (error, task) {
+    var itemId = request.params.itemId;
+
+    Item.findOne({ id: itemId }, function (error, item) {
       if (error) {
         response.status(500).send(error);
         return;
       }
 
-      if (task) {
-        task.text = request.body.text;
-        task.latitude = request.body.latitude;
-        task.longitude = request.body.longitude;
-        task.save();
+      if (item) {
+        if (item.name) {
+          item.name = request.body.name;
+        }
 
-        response.json(task);
+        if (item.description) {
+          item.description = request.body.description;
+        }
+
+        if (item.quantity) {
+          item.quantity = request.body.quantity;
+        }
+
+        item.save();
+
+        response.json(item);
         return;
       }
 
@@ -106,16 +126,19 @@ taskRouter
     });
   })
   .delete(function (request, response) {
-    var day = request.params.day;
 
-    Task.findOne({ day: day }, function (error, task) {
+    console.log('DELETE /items/:itemId');
+
+    var itemId = request.params.itemId;
+
+    Item.findOne({ id: itemId }, function (error, item) {
       if (error) {
         response.status(500).send(error);
         return;
       }
 
-      if (task) {
-        task.remove(function (error) {
+      if (item) {
+        item.remove(function (error) {
           if (error) {
             response.status(500).send(error);
             return;
@@ -129,10 +152,10 @@ taskRouter
       }
 
       response.status(404).json({});
-    }); 
+    });
   });
 
-app.use('/api', taskRouter);
+app.use('/api', itemRouter);
 
 app.listen(PORT, function () {
   console.log('Listening on port ' + PORT);
