@@ -1,8 +1,8 @@
 # RESTful API with Node.js, Express.js, MongoDB and Mongoose.
 
-Example of a RESTful API built with Node.js, Express.js and Mongoose.
+Example of a RESTful API built with Node.js, Express.js, MongoDB and Mongoose.
 
-## RESTful API
+## RESTful API endpoints
 
 ### GET `/api/items`
 
@@ -79,5 +79,5 @@ Delete item with specific id.
 
 ## Run
 
-0. Make sure MongoDB is running, if not: `sudo ~/mongodb/bin/mongod`
+0. Make sure MongoDB is running, if not: `sudo ~/mongodb/bin/mongod` (assuming you have `~/mongodb` directory).
 1. `npm run start`
