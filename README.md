@@ -6,10 +6,14 @@ Example of a RESTful API built with Node.js, Express.js and Mongoose.
 
 ### GET `/api/items`
 
+Get all items.
+
 + Method: `GET`
 + URL: `/api/items`
 
 ### POST `/api/items`
+
+Create new item.
 
 + Method: `POST`
 + URL: `/api/items`
