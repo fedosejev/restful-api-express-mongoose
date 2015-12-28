@@ -5,8 +5,11 @@ var bodyParser = require('body-parser');
 var app = express();
 
 var PORT = 8080;
+var HOST_NAME = 'localhost';
+var DATABASE_NAME = 'shoppingList';
 
-var db = mongoose.connect('mongodb://localhost/shoppingList');
+mongoose.connect('mongodb://' + HOST_NAME + '/' + DATABASE_NAME);
+
 var Item = require('./models/item');
 
 app.use(bodyParser.json());
@@ -31,15 +34,16 @@ itemRouter
 
     console.log('GET /items');
 
-    Item.find(function (error, itemDocument) {
+    Item.find(function (error, item) {
+
       if (error) {
         response.status(500).send(error);
         return;
       }
 
-      console.log(itemDocument);
+      console.log(item);
 
-      response.json(itemDocument);
+      response.json(item);
     });
   });
 
@@ -51,18 +55,16 @@ itemRouter
 
     var itemId = request.params.itemId;
 
-    Item.find({ id: itemId }, function (error, itemDocument) {
+    Item.find({ id: itemId }, function (error, item) {
+
       if (error) {
-        console.error(error);
-
         response.status(500).send(error);
-
         return;
       }
 
-      console.log(itemDocument);
+      console.log(item);
 
-      response.json(itemDocument);
+      response.json(item);
 
     });
   })
@@ -73,6 +75,7 @@ itemRouter
     var itemId = request.params.itemId;
 
     Item.findOne({ id: itemId }, function (error, item) {
+
       if (error) {
         response.status(500).send(error);
         return;
