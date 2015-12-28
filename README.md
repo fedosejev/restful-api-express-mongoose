@@ -13,7 +13,7 @@ Get all items.
 
 ### POST `/api/items`
 
-Create new item.
+Create a new item.
 
 + Method: `POST`
 + URL: `/api/items`
@@ -30,10 +30,14 @@ Create new item.
 
 ### GET `/api/items/:itemId`
 
+Get item with specific id.
+
 + Method: `GET`
 + URL: `/api/items/1`
 
 ### PUT `/api/items/:itemId`
+
+Update entire item with specific id.
 
 + Method: `PUT`
 + URL: `/api/items/1`
@@ -50,6 +54,8 @@ Create new item.
 
 ### PATCH `/api/items/:itemId`
 
+Update part of the item with specific id.
+
 + Method: `PATCH`
 + URL: `/api/items/1`
 + Body:
@@ -61,6 +67,8 @@ Create new item.
 ```
 
 ### DELETE `/api/items/:itemId`
+
+Delete item with specific id.
 
 + Method: `DELETE`
 + URL: `/api/items/1`
