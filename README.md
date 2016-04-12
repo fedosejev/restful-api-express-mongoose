@@ -1,6 +1,6 @@
-# RESTful API with Node.js, Express.js, MongoDB and Mongoose.
+# RESTful API with Node.js, Express.js, Mongoose and MongoDB.
 
-Example of a RESTful API built with Node.js, Express.js, MongoDB and Mongoose.
+Example of a RESTful API built with Node.js, Express.js, Mongoose and MongoDB.
 
 ## RESTful API endpoints
 
