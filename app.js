@@ -1,6 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var Item = require('./models/item');
 
 var app = express();
 
@@ -9,8 +10,6 @@ var HOST_NAME = 'localhost';
 var DATABASE_NAME = 'shoppingList';
 
 mongoose.connect('mongodb://' + HOST_NAME + '/' + DATABASE_NAME);
-
-var Item = require('./models/item');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -108,15 +107,15 @@ itemRouter
       }
 
       if (item) {
-        if (item.name) {
+        if (request.body.name) {
           item.name = request.body.name;
         }
 
-        if (item.description) {
+        if (request.body.description) {
           item.description = request.body.description;
         }
 
-        if (item.quantity) {
+        if (request.body.quantity) {
           item.quantity = request.body.quantity;
         }
 
@@ -148,7 +147,7 @@ itemRouter
             return;
           }
 
-          response.send(204).json({
+          response.status(204).json({
             'status': 'Removed'
           });
           return;
