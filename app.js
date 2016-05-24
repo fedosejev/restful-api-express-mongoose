@@ -34,16 +34,16 @@ itemRouter
 
     console.log('GET /items');
 
-    Item.find(function (error, item) {
+    Item.find(function (error, items) {
 
       if (error) {
         response.status(500).send(error);
         return;
       }
 
-      console.log(item);
+      console.log(items);
 
-      response.json(item);
+      response.json(items);
     });
   });
 
@@ -55,7 +55,7 @@ itemRouter
 
     var itemId = request.params.itemId;
 
-    Item.find({ id: itemId }, function (error, item) {
+    Item.findOne({ id: itemId }, function (error, item) {
 
       if (error) {
         response.status(500).send(error);
@@ -85,13 +85,16 @@ itemRouter
         item.name = request.body.name;
         item.description = request.body.description;
         item.quantity = request.body.quantity;
+        
         item.save();
 
         response.json(item);
         return;
       }
 
-      response.status(404).json({});
+      response.status(404).json({
+        message: 'Item with id ' + itemId + ' was not found.'
+      });
     });
   })
   .patch(function (request, response) {
@@ -101,23 +104,33 @@ itemRouter
     var itemId = request.params.itemId;
 
     Item.findOne({ id: itemId }, function (error, item) {
+      
       if (error) {
         response.status(500).send(error);
         return;
       }
 
       if (item) {
-        if (request.body.name) {
-          item.name = request.body.name;
+
+        for (var property in request.body) {
+          if (request.body.hasOwnProperty(property)) {
+            if (typeof item[property] !== 'undefined') {
+              item[property] = request.body[property];
+            }
+          }
         }
 
-        if (request.body.description) {
-          item.description = request.body.description;
-        }
+        // if (request.body.name) {
+        //   item.name = request.body.name;
+        // }
 
-        if (request.body.quantity) {
-          item.quantity = request.body.quantity;
-        }
+        // if (request.body.description) {
+        //   item.description = request.body.description;
+        // }
+
+        // if (request.body.quantity) {
+        //   item.quantity = request.body.quantity;
+        // }
 
         item.save();
 
@@ -125,7 +138,9 @@ itemRouter
         return;
       }
 
-      response.status(404).json({});
+      response.status(404).json({
+        message: 'Item with id ' + itemId + ' was not found.'
+      });
     });
   })
   .delete(function (request, response) {
@@ -135,6 +150,7 @@ itemRouter
     var itemId = request.params.itemId;
 
     Item.findOne({ id: itemId }, function (error, item) {
+      
       if (error) {
         response.status(500).send(error);
         return;
@@ -142,19 +158,21 @@ itemRouter
 
       if (item) {
         item.remove(function (error) {
+
           if (error) {
             response.status(500).send(error);
             return;
           }
 
-          response.status(204).json({
-            'status': 'Removed'
+          response.status(200).json({
+            'message': 'Item with id ' + itemId + ' was removed.'
           });
-          return;
+        });
+      } else {
+        response.status(404).json({
+          message: 'Item with id ' + itemId + ' was not found.'
         });
       }
-
-      response.status(404).json({});
     });
   });
 

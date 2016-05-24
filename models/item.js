@@ -20,6 +20,6 @@ var itemSchema = new Schema({
     required: true,
     default: 1
   }
-});
+}, { collection: 'dataItems' });
 
 module.exports = mongoose.model('Item', itemSchema);
